@@ -1,0 +1,4 @@
+DIMM_A1 ce=0 ue=0
+DIMM_A2 ce=250 ue=0
+DIMM_B1 ce=3 ue=0
+DIMM_B2 ce=10 ue=1

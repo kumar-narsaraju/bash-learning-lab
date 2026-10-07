@@ -1,0 +1,3 @@
+FAILING /dev/sdb (realloc=12 pending=0)
+FAILING /dev/sdc (realloc=0 pending=3)
+Healthy disks: 2

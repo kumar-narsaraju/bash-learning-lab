@@ -1,0 +1,21 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bash Terminal | Bash Learning Lab</title><script type="importmap">{"imports":{"sprintf-js":"./vendor/shims/sprintf-js.js","diff":"./vendor/shims/diff.js","turndown":"./vendor/shims/turndown.js","node:zlib":"./vendor/shims/node-zlib.js"}}</script><style>
+:root{--bg:#fff;--fg:#14202e;--card:#f3f6fa;--ac:#0e9f8a;--code:#0b1220;--cf:#e8eef5}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1722;--fg:#e6edf5;--card:#18222f;--ac:#18e0c1;--code:#070c14;--cf:#e8eef5}}
+*{box-sizing:border-box}body{margin:0;font:16px/1.6 system-ui,sans-serif;background:var(--bg);color:var(--fg);display:flex;min-height:100vh}
+nav{width:260px;padding:16px;background:var(--card);position:sticky;top:0;height:100vh;overflow:auto}
+nav h1{font-size:18px;margin:0 0 12px}nav a{display:block;padding:6px 8px;border-radius:6px;color:var(--fg);text-decoration:none;font-size:14px;cursor:pointer}
+nav a.on{background:var(--ac);color:#fff}main{flex:1;max-width:820px;padding:24px;margin:0 auto}
+pre{background:var(--code);color:var(--cf);padding:12px;border-radius:8px;overflow:auto;font-size:14px}code{font-family:ui-monospace,monospace}
+.card{background:var(--card);border-radius:10px;padding:14px;margin:16px 0}.btn{display:inline-block;background:var(--ac);color:#fff;border:0;border-radius:8px;padding:8px 14px;text-decoration:none;cursor:pointer;font-size:15px}
+.q p{margin:8px 0 4px;font-weight:600}.q label{display:block;cursor:pointer}.ok{color:#16a34a}.no{color:#dc2626}
+textarea{width:100%;background:var(--code);color:var(--cf);border:0;border-radius:8px;padding:10px;font:14px ui-monospace,monospace}
+.out{min-height:40px;white-space:pre-wrap}#term{background:var(--code);color:var(--cf);border-radius:10px;padding:12px;font:14px ui-monospace,monospace}
+#tout{margin:0;padding:0;background:none;white-space:pre-wrap;max-height:340px;overflow:auto}#trow{display:flex;gap:6px}#tin{flex:1;background:none;border:0;outline:0;color:inherit;font:inherit}
+@media(max-width:760px){body{display:block}nav{width:100%;height:auto;position:static}}</style><style>body{display:block;padding:16px}#term{max-width:1000px;margin:0 auto;min-height:70vh}#tout{max-height:70vh;min-height:60vh}</style></head><body>
+<p style="text-align:center"><a href="index.html">&larr; Back to lessons</a> &nbsp;|&nbsp; Full in-browser bash terminal. Type <code>help-lab</code> for sample data centre and hardware files.</p>
+<div id="term"><pre id="tout">Loading bash...</pre><div id="trow"><span id="tprompt">~ $</span><input id="tin" autocomplete="off" spellcheck="false" autofocus></div></div>
+<script type="module">async function boot(){const o=document.getElementById("tout");
+if(location.protocol==="file:"){o.textContent="This page was opened as a local file (file://). Browsers block the terminal engine there.\nOpen the website instead: https://<your-username>.github.io/bash-learning-lab/terminal.html\nOr run: python -m http.server 8000   (inside the docs folder) and open http://localhost:8000/terminal.html";return}
+try{const m=await import("./terminal.js?v=2");m.mountTerminal(o,document.getElementById("tin"),document.getElementById("tprompt"),document.getElementById("term"))}
+catch(e){o.textContent="Terminal failed to start:\n"+(e&&e.message||e)+"\n\nPlease send this message. Also try Ctrl+F5 (hard refresh) in case the old page is cached."}}
+boot();</script></body></html>

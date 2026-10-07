@@ -1,0 +1,3 @@
+CHECK CPU1 Temp: 92.000 degrees C
+CHECK FAN3: 0.000 RPM
+CHECK Inlet Temp: 38.000 degrees C

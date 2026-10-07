@@ -1,0 +1,7 @@
+hostname,rack,u,role,status
+web01,R01,10,web,online
+web02,R01,11,web,online
+db01,R01,20,database,maintenance
+gpu01,R02,5,gpu,online
+gpu02,R02,7,gpu,offline
+stor01,R03,2,storage,online

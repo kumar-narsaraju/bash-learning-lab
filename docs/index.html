@@ -1,0 +1,534 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bash Learning Lab</title><script type="importmap">{"imports":{"sprintf-js":"./vendor/shims/sprintf-js.js","diff":"./vendor/shims/diff.js","turndown":"./vendor/shims/turndown.js","node:zlib":"./vendor/shims/node-zlib.js"}}</script><style>
+:root{--bg:#fff;--fg:#14202e;--card:#f3f6fa;--ac:#0e9f8a;--code:#0b1220;--cf:#e8eef5}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1722;--fg:#e6edf5;--card:#18222f;--ac:#18e0c1;--code:#070c14;--cf:#e8eef5}}
+*{box-sizing:border-box}body{margin:0;font:16px/1.6 system-ui,sans-serif;background:var(--bg);color:var(--fg);display:flex;min-height:100vh}
+nav{width:260px;padding:16px;background:var(--card);position:sticky;top:0;height:100vh;overflow:auto}
+nav h1{font-size:18px;margin:0 0 12px}nav a{display:block;padding:6px 8px;border-radius:6px;color:var(--fg);text-decoration:none;font-size:14px;cursor:pointer}
+nav a.on{background:var(--ac);color:#fff}main{flex:1;max-width:820px;padding:24px;margin:0 auto}
+pre{background:var(--code);color:var(--cf);padding:12px;border-radius:8px;overflow:auto;font-size:14px}code{font-family:ui-monospace,monospace}
+.card{background:var(--card);border-radius:10px;padding:14px;margin:16px 0}.btn{display:inline-block;background:var(--ac);color:#fff;border:0;border-radius:8px;padding:8px 14px;text-decoration:none;cursor:pointer;font-size:15px}
+.q p{margin:8px 0 4px;font-weight:600}.q label{display:block;cursor:pointer}.ok{color:#16a34a}.no{color:#dc2626}
+textarea{width:100%;background:var(--code);color:var(--cf);border:0;border-radius:8px;padding:10px;font:14px ui-monospace,monospace}
+.out{min-height:40px;white-space:pre-wrap}#term{background:var(--code);color:var(--cf);border-radius:10px;padding:12px;font:14px ui-monospace,monospace}
+#tout{margin:0;padding:0;background:none;white-space:pre-wrap;max-height:340px;overflow:auto}#trow{display:flex;gap:6px}#tin{flex:1;background:none;border:0;outline:0;color:inherit;font:inherit}
+@media(max-width:760px){body{display:block}nav{width:100%;height:auto;position:static}}</style></head><body>
+<nav><h1>Bash Learning Lab</h1><a id="l-home" onclick="show('home')">Start here</a><a href="terminal.html" style="font-weight:600">&gt;_ Full terminal</a><a id="l-m01" onclick="show('m01')">01. Your First Script</a><a id="l-m02" onclick="show('m02')">02. Variables and Input</a><a id="l-m03" onclick="show('m03')">03. Making Decisions (if)</a><a id="l-m04" onclick="show('m04')">04. Loops</a><a id="l-m05" onclick="show('m05')">05. Functions and Arguments</a><a id="l-m06" onclick="show('m06')">06. Working with Text</a><a id="l-m07" onclick="show('m07')">07. case and Arrays</a><a id="l-m08" onclick="show('m08')">08. Safe Scripts and Error Handling</a><a id="l-m09" onclick="show('m09')">09. Logging and Automation</a><a id="l-m10" onclick="show('m10')">10. Mini Project: Word Report</a><small style="display:block;margin:12px 8px 4px;opacity:.7">Data Center SysAdmin Projects</small><a id="l-mda01" onclick="show(&quot;mda01&quot;)">01. Rack inventory report</a><a id="l-mda02" onclick="show(&quot;mda02&quot;)">02. Disk space alert</a><a id="l-mda03" onclick="show(&quot;mda03&quot;)">03. Failed SSH login hunter</a><a id="l-mda04" onclick="show(&quot;mda04&quot;)">04. Patch and reboot list</a><small style="display:block;margin:12px 8px 4px;opacity:.7">Server Hardware Troubleshooting</small><a id="l-mha01" onclick="show(&quot;mha01&quot;)">01. IPMI event log triage</a><a id="l-mha02" onclick="show(&quot;mha02&quot;)">02. Temperature and fan check</a><a id="l-mha03" onclick="show(&quot;mha03&quot;)">03. Disk health scan (SMART)</a><a id="l-mha04" onclick="show(&quot;mha04&quot;)">04. Memory ECC error finder</a></nav><main>
+<section id="home"><h1>Learn Bash scripting online</h1><p>Read a lesson, test yourself with the quiz, then practise in a real Linux terminal in your browser: no install needed.</p>
+<div class="card"><b>Bash terminal, running right here in your browser.</b> No sign-in, no install. Try: <code>echo "Hello"</code>, <code>ls</code>, <code>cat data.csv</code>, <code>cut -d, -f1 data.csv | sort</code>, <code>x=5</code> then <code>echo $((x*2))</code>. Type <code>help-lab</code> for ideas. Files you create stay until you reload.</div>
+<div id="term"><pre id="tout">Loading bash...</pre><div id="trow"><span id="tprompt">$</span><input id="tin" autocomplete="off" spellcheck="false" autofocus></div></div>
+<div class="card"><b>Step 2.</b> Open a module on the left: read the lesson, answer the quiz, write your script in the built-in editor and press <b>Check answer</b>.</div>
+<div class="card"><b>Step 3.</b> Build your own tools from the <a href="https://github.com/<your-username>/bash-learning-lab/tree/main/projects">projects</a> and share them with a pull request.</div></section>
+<section id="m01" hidden><h1>Module 01: Your First Script</h1>
+<h2>Learn</h2>
+<p>A script is a text file of commands. Bash runs them top to bottom.</p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+echo &quot;Hello&quot;
+</code></pre>
+<ul>
+<li><code>#!/usr/bin/env bash</code> (the <strong>shebang</strong>) tells Linux which program runs the file.</li>
+<li><code>echo</code> prints text.</li>
+<li>Run it: <code>bash answer.sh</code>, or <code>chmod +x answer.sh</code> then <code>./answer.sh</code>.</li>
+<li>Lines starting with <code>#</code> are comments. Use them.</li>
+</ul>
+<h2>Your turn</h2>
+<p>Print exactly two lines:</p>
+<pre><code>Hello, Linux!
+I am learning Bash.
+</code></pre>
+<p>Create <code>answer.sh</code> in this folder, then check from the repo root:</p>
+<pre><code class="language-bash">./check.sh 01
+</code></pre>
+<p>Stuck? Re-read the lesson, run your script by hand, and only then look at <code>solution.sh</code>.</p>
+<div class="card"><b>Quick quiz</b><div class="q"><p>1. What does the shebang line do?</p><label><input type="radio" name="q01_0" onclick="ans('01',0,0,1)"> Comments the file</label><label><input type="radio" name="q01_0" onclick="ans('01',0,1,1)"> Tells Linux which program runs the script</label><label><input type="radio" name="q01_0" onclick="ans('01',0,2,1)"> Prints text</label><label><input type="radio" name="q01_0" onclick="ans('01',0,3,1)"> Deletes the file</label><small id="r01_0"></small></div><div class="q"><p>2. Which command makes a script executable?</p><label><input type="radio" name="q01_1" onclick="ans('01',1,0,0)"> chmod +x script.sh</label><label><input type="radio" name="q01_1" onclick="ans('01',1,1,0)"> run script.sh</label><label><input type="radio" name="q01_1" onclick="ans('01',1,2,0)"> exec +x</label><label><input type="radio" name="q01_1" onclick="ans('01',1,3,0)"> mod 777</label><small id="r01_1"></small></div></div>
+<details class="card"><summary>Expected output for the exercise</summary><pre>Hello, Linux!
+I am learning Bash.
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+echo &quot;Hello, Linux!&quot;
+echo &quot;I am learning Bash.&quot;
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b><br><small>Your script receives this as input: <code>(nothing)</code></small>
+<textarea id="ed01" rows="9" spellcheck="false">#!/usr/bin/env bash
+# write your solution here
+</textarea>
+<p><button class="btn" onclick="runMod('01',false)">Run</button> <button class="btn" onclick="runMod('01',true)">Check answer</button></p><pre class="out" id="out01"></pre></div></section><section id="m02" hidden><h1>Module 02: Variables and Input</h1>
+<h2>Learn</h2>
+<pre><code class="language-bash">name=&quot;Asha&quot;          # no spaces around =
+echo &quot;Hi $name&quot;      # use $ to read; double quotes keep spaces safe
+read -r city         # read a line typed by the user
+echo $((2 + 3))      # arithmetic with $(( ))
+today=$(date +%F)    # command substitution: store a command's output
+</code></pre>
+<p><strong>Always quote variables</strong> (<code>"$name"</code>). Unquoted variables break on spaces.</p>
+<h2>Your turn</h2>
+<p>Read a name, then an age (two lines of input). Print: <code>Hi NAME, next year you will be AGE+1.</code></p>
+<p>Create <code>answer.sh</code> in this folder, then check from the repo root:</p>
+<pre><code class="language-bash">./check.sh 02
+</code></pre>
+<p>Stuck? Re-read the lesson, run your script by hand, and only then look at <code>solution.sh</code>.</p>
+<div class="card"><b>Quick quiz</b><div class="q"><p>1. Which assigns a variable correctly?</p><label><input type="radio" name="q02_0" onclick="ans('02',0,0,1)"> x = 5</label><label><input type="radio" name="q02_0" onclick="ans('02',0,1,1)"> x=5</label><label><input type="radio" name="q02_0" onclick="ans('02',0,2,1)"> $x=5</label><label><input type="radio" name="q02_0" onclick="ans('02',0,3,1)"> set x 5</label><small id="r02_0"></small></div><div class="q"><p>2. With a=2 and b=3, what prints 5?</p><label><input type="radio" name="q02_1" onclick="ans('02',1,0,2)"> echo a+b</label><label><input type="radio" name="q02_1" onclick="ans('02',1,1,2)"> echo $a+$b</label><label><input type="radio" name="q02_1" onclick="ans('02',1,2,2)"> echo $((a+b))</label><label><input type="radio" name="q02_1" onclick="ans('02',1,3,2)"> echo (a+b)</label><small id="r02_1"></small></div></div>
+<details class="card"><summary>Expected output for the exercise</summary><pre>Hi Asha, next year you will be 21.
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+read -r name
+read -r age
+echo &quot;Hi $name, next year you will be $((age + 1)).&quot;
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b><br><small>Your script receives this as input: <code>Asha
+20</code></small>
+<textarea id="ed02" rows="9" spellcheck="false">#!/usr/bin/env bash
+# write your solution here
+</textarea>
+<p><button class="btn" onclick="runMod('02',false)">Run</button> <button class="btn" onclick="runMod('02',true)">Check answer</button></p><pre class="out" id="out02"></pre></div></section><section id="m03" hidden><h1>Module 03: Making Decisions (if)</h1>
+<h2>Learn</h2>
+<pre><code class="language-bash">if [[ -f &quot;$file&quot; ]]; then echo &quot;file exists&quot;
+elif [[ -d &quot;$file&quot; ]]; then echo &quot;directory&quot;
+else echo &quot;missing&quot;; fi
+
+if (( n % 2 == 0 )); then echo even; fi
+</code></pre>
+<p>Tests: <code>-f</code> file, <code>-d</code> directory, <code>-z</code> empty string, <code>==</code> string equal. For numbers use <code>(( ))</code> with <code>&lt; &gt; ==</code> or <code>-lt -gt -eq</code> inside <code>[[ ]]</code>.
+Every command returns an <strong>exit code</strong>: <code>0</code> = success, anything else = failure. <code>$?</code> holds the last one.</p>
+<h2>Your turn</h2>
+<p>Read a number. Print <code>N is even</code> or <code>N is odd</code>.</p>
+<p>Create <code>answer.sh</code> in this folder, then check from the repo root:</p>
+<pre><code class="language-bash">./check.sh 03
+</code></pre>
+<p>Stuck? Re-read the lesson, run your script by hand, and only then look at <code>solution.sh</code>.</p>
+<div class="card"><b>Quick quiz</b><div class="q"><p>1. Which exit code means success?</p><label><input type="radio" name="q03_0" onclick="ans('03',0,0,1)"> 1</label><label><input type="radio" name="q03_0" onclick="ans('03',0,1,1)"> 0</label><label><input type="radio" name="q03_0" onclick="ans('03',0,2,1)"> -1</label><label><input type="radio" name="q03_0" onclick="ans('03',0,3,1)"> 255</label><small id="r03_0"></small></div><div class="q"><p>2. Which test checks that a regular file exists?</p><label><input type="radio" name="q03_1" onclick="ans('03',1,0,1)"> -d</label><label><input type="radio" name="q03_1" onclick="ans('03',1,1,1)"> -f</label><label><input type="radio" name="q03_1" onclick="ans('03',1,2,1)"> -z</label><label><input type="radio" name="q03_1" onclick="ans('03',1,3,1)"> -n</label><small id="r03_1"></small></div></div>
+<details class="card"><summary>Expected output for the exercise</summary><pre>7 is odd
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+read -r n
+if (( n % 2 == 0 )); then
+  echo &quot;$n is even&quot;
+else
+  echo &quot;$n is odd&quot;
+fi
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b><br><small>Your script receives this as input: <code>7</code></small>
+<textarea id="ed03" rows="9" spellcheck="false">#!/usr/bin/env bash
+# write your solution here
+</textarea>
+<p><button class="btn" onclick="runMod('03',false)">Run</button> <button class="btn" onclick="runMod('03',true)">Check answer</button></p><pre class="out" id="out03"></pre></div></section><section id="m04" hidden><h1>Module 04: Loops</h1>
+<h2>Learn</h2>
+<pre><code class="language-bash">for i in {1..5}; do echo &quot;$i&quot;; done
+for f in *.txt; do echo &quot;$f&quot;; done
+i=0; while (( i &lt; 3 )); do echo &quot;$i&quot;; ((i++)); done
+while read -r line; do echo &quot;got: $line&quot;; done &lt; file.txt
+</code></pre>
+<p><code>break</code> leaves a loop, <code>continue</code> skips to the next round.</p>
+<h2>Your turn</h2>
+<p>Print the squares of 1 to 5, one per line, like <code>3 squared is 9</code>.</p>
+<p>Create <code>answer.sh</code> in this folder, then check from the repo root:</p>
+<pre><code class="language-bash">./check.sh 04
+</code></pre>
+<p>Stuck? Re-read the lesson, run your script by hand, and only then look at <code>solution.sh</code>.</p>
+<div class="card"><b>Quick quiz</b><div class="q"><p>1. How many lines does: for i in {1..3}; do echo $i; done print?</p><label><input type="radio" name="q04_0" onclick="ans('04',0,0,2)"> 1</label><label><input type="radio" name="q04_0" onclick="ans('04',0,1,2)"> 2</label><label><input type="radio" name="q04_0" onclick="ans('04',0,2,2)"> 3</label><label><input type="radio" name="q04_0" onclick="ans('04',0,3,2)"> Error</label><small id="r04_0"></small></div><div class="q"><p>2. What does break do?</p><label><input type="radio" name="q04_1" onclick="ans('04',1,0,1)"> Skips one round</label><label><input type="radio" name="q04_1" onclick="ans('04',1,1,1)"> Leaves the loop</label><label><input type="radio" name="q04_1" onclick="ans('04',1,2,1)"> Restarts the loop</label><label><input type="radio" name="q04_1" onclick="ans('04',1,3,1)"> Pauses</label><small id="r04_1"></small></div></div>
+<details class="card"><summary>Expected output for the exercise</summary><pre>1 squared is 1
+2 squared is 4
+3 squared is 9
+4 squared is 16
+5 squared is 25
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+for i in {1..5}; do
+  echo &quot;$i squared is $((i * i))&quot;
+done
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b><br><small>Your script receives this as input: <code>(nothing)</code></small>
+<textarea id="ed04" rows="9" spellcheck="false">#!/usr/bin/env bash
+# write your solution here
+</textarea>
+<p><button class="btn" onclick="runMod('04',false)">Run</button> <button class="btn" onclick="runMod('04',true)">Check answer</button></p><pre class="out" id="out04"></pre></div></section><section id="m05" hidden><h1>Module 05: Functions and Arguments</h1>
+<h2>Learn</h2>
+<pre><code class="language-bash">greet() {            # define
+  local who=&quot;$1&quot;     # $1 = first argument, local = stays inside the function
+  echo &quot;Hello $who&quot;
+}
+greet &quot;Ravi&quot;         # call
+echo &quot;$#&quot;            # number of script arguments
+echo &quot;$@&quot;            # all arguments
+</code></pre>
+<p>Scripts take arguments the same way: <code>./script.sh a b</code> makes <code>$1=a</code>, <code>$2=b</code>.
+Functions "return" text by printing it; capture with <code>$(func)</code>.</p>
+<h2>Your turn</h2>
+<p>The script receives two numbers as arguments (see <code>args.txt</code>). Write an <code>add</code> function and print <code>Sum: 7</code> for <code>3 4</code>.</p>
+<p>Create <code>answer.sh</code> in this folder, then check from the repo root:</p>
+<pre><code class="language-bash">./check.sh 05
+</code></pre>
+<p>Stuck? Re-read the lesson, run your script by hand, and only then look at <code>solution.sh</code>.</p>
+<div class="card"><b>Quick quiz</b><div class="q"><p>1. Inside a script, what is $1?</p><label><input type="radio" name="q05_0" onclick="ans('05',0,0,1)"> The script name</label><label><input type="radio" name="q05_0" onclick="ans('05',0,1,1)"> The first argument</label><label><input type="radio" name="q05_0" onclick="ans('05',0,2,1)"> All arguments</label><label><input type="radio" name="q05_0" onclick="ans('05',0,3,1)"> The exit code</label><small id="r05_0"></small></div><div class="q"><p>2. What does local do in a function?</p><label><input type="radio" name="q05_1" onclick="ans('05',1,0,1)"> Makes the variable global</label><label><input type="radio" name="q05_1" onclick="ans('05',1,1,1)"> Keeps it inside the function</label><label><input type="radio" name="q05_1" onclick="ans('05',1,2,1)"> Deletes it</label><label><input type="radio" name="q05_1" onclick="ans('05',1,3,1)"> Exports it</label><small id="r05_1"></small></div></div>
+<details class="card"><summary>Expected output for the exercise</summary><pre>Sum: 7
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+add() {
+  echo $(( $1 + $2 ))
+}
+echo &quot;Sum: $(add &quot;$1&quot; &quot;$2&quot;)&quot;
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b><br><small>Your script receives this as input: <code>(nothing)</code> and arguments: <code>3 4</code></small>
+<textarea id="ed05" rows="9" spellcheck="false">#!/usr/bin/env bash
+# write your solution here
+</textarea>
+<p><button class="btn" onclick="runMod('05',false)">Run</button> <button class="btn" onclick="runMod('05',true)">Check answer</button></p><pre class="out" id="out05"></pre></div></section><section id="m06" hidden><h1>Module 06: Working with Text</h1>
+<h2>Learn</h2>
+<p>The Linux toolbox, connected with <strong>pipes</strong> (<code>|</code>):</p>
+<pre><code class="language-bash">grep &quot;error&quot; log.txt          # find lines
+cut -d, -f2 data.csv          # column 2 of a CSV
+sort | uniq -c                # count duplicates
+wc -l file.txt                # count lines
+sed 's/old/new/g' file.txt    # replace text
+awk -F, '{s+=$2} END{print s}' data.csv   # sum a column
+</code></pre>
+<p><code>&gt;</code> writes a file, <code>&gt;&gt;</code> appends, <code>&lt;</code> feeds a file in. <code>2&gt;</code> redirects errors.</p>
+<h2>Your turn</h2>
+<p>Input lines look like <code>name,score</code>. Print <code>Total:</code> followed by the sum of all scores.</p>
+<p>Create <code>answer.sh</code> in this folder, then check from the repo root:</p>
+<pre><code class="language-bash">./check.sh 06
+</code></pre>
+<p>Stuck? Re-read the lesson, run your script by hand, and only then look at <code>solution.sh</code>.</p>
+<div class="card"><b>Quick quiz</b><div class="q"><p>1. Which command counts lines?</p><label><input type="radio" name="q06_0" onclick="ans('06',0,0,0)"> wc -l</label><label><input type="radio" name="q06_0" onclick="ans('06',0,1,0)"> cut</label><label><input type="radio" name="q06_0" onclick="ans('06',0,2,0)"> sed</label><label><input type="radio" name="q06_0" onclick="ans('06',0,3,0)"> uniq</label><small id="r06_0"></small></div><div class="q"><p>2. What does &gt;&gt; do?</p><label><input type="radio" name="q06_1" onclick="ans('06',1,0,1)"> Overwrites a file</label><label><input type="radio" name="q06_1" onclick="ans('06',1,1,1)"> Appends to a file</label><label><input type="radio" name="q06_1" onclick="ans('06',1,2,1)"> Reads a file</label><label><input type="radio" name="q06_1" onclick="ans('06',1,3,1)"> Pipes output</label><small id="r06_1"></small></div></div>
+<details class="card"><summary>Expected output for the exercise</summary><pre>Total: 240
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+awk -F, &#x27;{ s += $2 } END { print &quot;Total: &quot; s }&#x27;
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b><br><small>Your script receives this as input: <code>ravi,80
+meena,90
+kiran,70</code></small>
+<textarea id="ed06" rows="9" spellcheck="false">#!/usr/bin/env bash
+# write your solution here
+</textarea>
+<p><button class="btn" onclick="runMod('06',false)">Run</button> <button class="btn" onclick="runMod('06',true)">Check answer</button></p><pre class="out" id="out06"></pre></div></section><section id="m07" hidden><h1>Module 07: case and Arrays</h1>
+<h2>Learn</h2>
+<pre><code class="language-bash">case &quot;$cmd&quot; in
+  start) echo &quot;Starting&quot; ;;
+  stop|halt) echo &quot;Stopping&quot; ;;
+  *) echo &quot;Unknown&quot; ;;
+esac
+
+fruits=(apple mango banana)
+echo &quot;${fruits[0]}&quot;        # first item
+echo &quot;${#fruits[@]}&quot;       # how many
+for f in &quot;${fruits[@]}&quot;; do echo &quot;$f&quot;; done
+</code></pre>
+<h2>Your turn</h2>
+<p>Read a word. <code>start</code> prints <code>Starting service</code>, <code>stop</code> prints <code>Stopping service</code>, anything else prints <code>Unknown command</code>.</p>
+<p>Create <code>answer.sh</code> in this folder, then check from the repo root:</p>
+<pre><code class="language-bash">./check.sh 07
+</code></pre>
+<p>Stuck? Re-read the lesson, run your script by hand, and only then look at <code>solution.sh</code>.</p>
+<div class="card"><b>Quick quiz</b><div class="q"><p>1. Which keyword ends a case block?</p><label><input type="radio" name="q07_0" onclick="ans('07',0,0,2)"> fi</label><label><input type="radio" name="q07_0" onclick="ans('07',0,1,2)"> done</label><label><input type="radio" name="q07_0" onclick="ans('07',0,2,2)"> esac</label><label><input type="radio" name="q07_0" onclick="ans('07',0,3,2)"> end</label><small id="r07_0"></small></div><div class="q"><p>2. What does ${#arr[@]} give?</p><label><input type="radio" name="q07_1" onclick="ans('07',1,0,1)"> Last item</label><label><input type="radio" name="q07_1" onclick="ans('07',1,1,1)"> Number of items</label><label><input type="radio" name="q07_1" onclick="ans('07',1,2,1)"> First item</label><label><input type="radio" name="q07_1" onclick="ans('07',1,3,1)"> Length of first item</label><small id="r07_1"></small></div></div>
+<details class="card"><summary>Expected output for the exercise</summary><pre>Starting service
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+read -r cmd
+case &quot;$cmd&quot; in
+  start) echo &quot;Starting service&quot; ;;
+  stop)  echo &quot;Stopping service&quot; ;;
+  *)     echo &quot;Unknown command&quot; ;;
+esac
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b><br><small>Your script receives this as input: <code>start</code></small>
+<textarea id="ed07" rows="9" spellcheck="false">#!/usr/bin/env bash
+# write your solution here
+</textarea>
+<p><button class="btn" onclick="runMod('07',false)">Run</button> <button class="btn" onclick="runMod('07',true)">Check answer</button></p><pre class="out" id="out07"></pre></div></section><section id="m08" hidden><h1>Module 08: Safe Scripts and Error Handling</h1>
+<h2>Learn</h2>
+<p>Put this near the top of serious scripts:</p>
+<pre><code class="language-bash">set -euo pipefail
+</code></pre>
+<ul>
+<li><code>-e</code> stop on the first failing command</li>
+<li><code>-u</code> error on unset variables (catches typos)</li>
+<li><code>-o pipefail</code> a failure inside a pipe counts</li>
+</ul>
+<p>Check things yourself and exit with a code:</p>
+<pre><code class="language-bash">[[ -f &quot;$f&quot; ]] || { echo &quot;Error: ...&quot; &gt;&amp;2; exit 1; }
+trap 'echo cleaning up' EXIT      # runs when the script ends
+</code></pre>
+<p>Send errors to <strong>stderr</strong> with <code>&gt;&amp;2</code>.</p>
+<h2>Your turn</h2>
+<p>Read a file name. If the file does not exist print <code>Error: file not found</code> and <code>exit 1</code>; otherwise print <code>OK</code>.</p>
+<p>Create <code>answer.sh</code> in this folder, then check from the repo root:</p>
+<pre><code class="language-bash">./check.sh 08
+</code></pre>
+<p>Stuck? Re-read the lesson, run your script by hand, and only then look at <code>solution.sh</code>.</p>
+<div class="card"><b>Quick quiz</b><div class="q"><p>1. What does set -u do?</p><label><input type="radio" name="q08_0" onclick="ans('08',0,0,1)"> Stops on any error</label><label><input type="radio" name="q08_0" onclick="ans('08',0,1,1)"> Errors on unset variables</label><label><input type="radio" name="q08_0" onclick="ans('08',0,2,1)"> Unsets variables</label><label><input type="radio" name="q08_0" onclick="ans('08',0,3,1)"> Turns on debug</label><small id="r08_0"></small></div><div class="q"><p>2. Where should error messages go?</p><label><input type="radio" name="q08_1" onclick="ans('08',1,0,1)"> stdout</label><label><input type="radio" name="q08_1" onclick="ans('08',1,1,1)"> stderr (&gt;&amp;2)</label><label><input type="radio" name="q08_1" onclick="ans('08',1,2,1)"> /dev/null</label><label><input type="radio" name="q08_1" onclick="ans('08',1,3,1)"> A pipe</label><small id="r08_1"></small></div></div>
+<details class="card"><summary>Expected output for the exercise</summary><pre>Error: file not found
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+read -r f
+if [[ ! -f &quot;$f&quot; ]]; then
+  echo &quot;Error: file not found&quot;
+  exit 1
+fi
+echo &quot;OK&quot;
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b><br><small>Your script receives this as input: <code>definitely_missing_file.txt</code></small>
+<textarea id="ed08" rows="9" spellcheck="false">#!/usr/bin/env bash
+# write your solution here
+</textarea>
+<p><button class="btn" onclick="runMod('08',false)">Run</button> <button class="btn" onclick="runMod('08',true)">Check answer</button></p><pre class="out" id="out08"></pre></div></section><section id="m09" hidden><h1>Module 09: Logging and Automation</h1>
+<h2>Learn</h2>
+<pre><code class="language-bash">log() { echo &quot;[INFO] $*&quot;; }
+log &quot;Backup started&quot;
+echo &quot;$(date '+%F %T') done&quot; &gt;&gt; run.log     # timestamped log line
+</code></pre>
+<p><strong>cron</strong> runs scripts on a schedule. Edit with <code>crontab -e</code>:</p>
+<pre><code># min hour day month weekday  command
+30 2 * * *  /home/me/backup.sh &gt;&gt; /home/me/backup.log 2&gt;&amp;1
+</code></pre>
+<p>That means "every day at 02:30". Always use full paths in cron.</p>
+<h2>Your turn</h2>
+<p>Read one line of text and print it as a log line: <code>[INFO] &lt;text&gt;</code>. Use a <code>log</code> function.</p>
+<p>Create <code>answer.sh</code> in this folder, then check from the repo root:</p>
+<pre><code class="language-bash">./check.sh 09
+</code></pre>
+<p>Stuck? Re-read the lesson, run your script by hand, and only then look at <code>solution.sh</code>.</p>
+<div class="card"><b>Quick quiz</b><div class="q"><p>1. What does the cron time 30 2 * * * mean?</p><label><input type="radio" name="q09_0" onclick="ans('09',0,0,1)"> Every 30 minutes</label><label><input type="radio" name="q09_0" onclick="ans('09',0,1,1)"> Every day at 02:30</label><label><input type="radio" name="q09_0" onclick="ans('09',0,2,1)"> Monthly</label><label><input type="radio" name="q09_0" onclick="ans('09',0,3,1)"> Sundays at 2:30</label><small id="r09_0"></small></div><div class="q"><p>2. Why use full paths in cron?</p><label><input type="radio" name="q09_1" onclick="ans('09',1,0,1)"> It is faster</label><label><input type="radio" name="q09_1" onclick="ans('09',1,1,1)"> Cron has a minimal environment and PATH</label><label><input type="radio" name="q09_1" onclick="ans('09',1,2,1)"> Bash requires it</label><label><input type="radio" name="q09_1" onclick="ans('09',1,3,1)"> No reason</label><small id="r09_1"></small></div></div>
+<details class="card"><summary>Expected output for the exercise</summary><pre>[INFO] Backup started
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+log() {
+  echo &quot;[INFO] $*&quot;
+}
+read -r msg
+log &quot;$msg&quot;
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b><br><small>Your script receives this as input: <code>Backup started</code></small>
+<textarea id="ed09" rows="9" spellcheck="false">#!/usr/bin/env bash
+# write your solution here
+</textarea>
+<p><button class="btn" onclick="runMod('09',false)">Run</button> <button class="btn" onclick="runMod('09',true)">Check answer</button></p><pre class="out" id="out09"></pre></div></section><section id="m10" hidden><h1>Module 10: Mini Project: Word Report</h1>
+<h2>Learn</h2>
+<p>Combine everything. Plan first (input, steps, output), then code in small pieces, testing as you go.
+Tips: <code>${#word}</code> is a string's length; <code>while read -r line</code> reads input line by line.</p>
+<h2>Your turn</h2>
+<p>Read words, one per line. Print <code>Count: N</code> and <code>Longest: WORD</code> (the first longest).</p>
+<p>Create <code>answer.sh</code> in this folder, then check from the repo root:</p>
+<pre><code class="language-bash">./check.sh 10
+</code></pre>
+<p>Stuck? Re-read the lesson, run your script by hand, and only then look at <code>solution.sh</code>.</p>
+<div class="card"><b>Quick quiz</b><div class="q"><p>1. What does ${#word} give?</p><label><input type="radio" name="q10_0" onclick="ans('10',0,0,1)"> First character</label><label><input type="radio" name="q10_0" onclick="ans('10',0,1,1)"> Length of the word</label><label><input type="radio" name="q10_0" onclick="ans('10',0,2,1)"> Number of words</label><label><input type="radio" name="q10_0" onclick="ans('10',0,3,1)"> Uppercase word</label><small id="r10_0"></small></div><div class="q"><p>2. Best first step in a project?</p><label><input type="radio" name="q10_1" onclick="ans('10',1,0,1)"> Write all the code</label><label><input type="radio" name="q10_1" onclick="ans('10',1,1,1)"> Plan input, steps and output</label><label><input type="radio" name="q10_1" onclick="ans('10',1,2,1)"> Copy from the web</label><label><input type="radio" name="q10_1" onclick="ans('10',1,3,1)"> Skip testing</label><small id="r10_1"></small></div></div>
+<details class="card"><summary>Expected output for the exercise</summary><pre>Count: 3
+Longest: scripting
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+count=0
+longest=&quot;&quot;
+while read -r w; do
+  count=$((count + 1))
+  if (( ${#w} &gt; ${#longest} )); then longest=&quot;$w&quot;; fi
+done
+echo &quot;Count: $count&quot;
+echo &quot;Longest: $longest&quot;
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b><br><small>Your script receives this as input: <code>linux
+bash
+scripting</code></small>
+<textarea id="ed10" rows="9" spellcheck="false">#!/usr/bin/env bash
+# write your solution here
+</textarea>
+<p><button class="btn" onclick="runMod('10',false)">Run</button> <button class="btn" onclick="runMod('10',true)">Check answer</button></p><pre class="out" id="out10"></pre></div></section><section id="mda01" hidden><h1>Rack inventory report</h1>
+<p><strong>Goal:</strong> Your asset list <code>inventory.csv</code> has columns <code>hostname,rack,u,role,status</code>. Print how many servers sit in each rack (format <code>R01: 3</code>), then a line <code>NOT ONLINE:</code> followed by the hostnames whose status is not <code>online</code>.</p>
+<p><strong>Hint:</strong> <code>cut</code>, <code>sort | uniq -c</code>, <code>awk -F,</code>. Skip the header line with <code>tail -n +2</code>.</p>
+<p>Sample data: <code>inventory.csv</code>. Write <code>answer.sh</code> in this folder and check it with <code>./check.sh datacenter/01-rack-inventory</code>.</p>
+<div class="card"><b>Sample data (already loaded in the editor's sandbox)</b><details><summary><code>inventory.csv</code></summary><pre>hostname,rack,u,role,status
+web01,R01,10,web,online
+web02,R01,11,web,online
+db01,R01,20,database,maintenance
+gpu01,R02,5,gpu,online
+gpu02,R02,7,gpu,offline
+stor01,R03,2,storage,online
+</pre></details></div>
+<details class="card"><summary>Expected output</summary><pre>R01: 3
+R02: 2
+R03: 1
+NOT ONLINE:
+db01
+gpu02
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+tail -n +2 inventory.csv | cut -d, -f2 | sort | uniq -c | awk &#x27;{print $2&quot;: &quot;$1}&#x27;
+echo &quot;NOT ONLINE:&quot;
+tail -n +2 inventory.csv | awk -F, &#x27;$5!=&quot;online&quot;{print $1}&#x27;
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b>
+<textarea id="edda01" rows="9" spellcheck="false">#!/usr/bin/env bash
+# the sample files are in the current folder
+</textarea>
+<p><button class="btn" onclick="runMod('da01',false)">Run</button> <button class="btn" onclick="runMod('da01',true)">Check answer</button></p><pre class="out" id="outda01"></pre></div></section><section id="mda02" hidden><h1>Disk space alert</h1>
+<p><strong>Goal:</strong> <code>df.txt</code> is saved <code>df -h</code> output. Print <code>ALERT &lt;mount&gt; &lt;percent&gt;</code> for every filesystem that is 80% full or more. Nothing else.</p>
+<p><strong>Hint:</strong> Percent is column 5 (<code>85%</code>). In awk, <code>+$5</code> turns <code>85%</code> into the number 85. Mount is column 6.</p>
+<p>Sample data: <code>df.txt</code>. Write <code>answer.sh</code> in this folder and check it with <code>./check.sh datacenter/02-disk-space-alert</code>.</p>
+<div class="card"><b>Sample data (already loaded in the editor's sandbox)</b><details><summary><code>df.txt</code></summary><pre>Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2        50G   41G  9.0G  82% /
+/dev/sdb1       2.0T  1.1T  900G  55% /data
+/dev/sdc1       4.0T  3.8T  200G  95% /backup
+tmpfs           16G     0   16G   0% /dev/shm
+</pre></details></div>
+<details class="card"><summary>Expected output</summary><pre>ALERT / 82%
+ALERT /backup 95%
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+awk &#x27;NR&gt;1 &amp;&amp; +$5&gt;=80 {print &quot;ALERT&quot;, $6, $5}&#x27; df.txt
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b>
+<textarea id="edda02" rows="9" spellcheck="false">#!/usr/bin/env bash
+# the sample files are in the current folder
+</textarea>
+<p><button class="btn" onclick="runMod('da02',false)">Run</button> <button class="btn" onclick="runMod('da02',true)">Check answer</button></p><pre class="out" id="outda02"></pre></div></section><section id="mda03" hidden><h1>Failed SSH login hunter</h1>
+<p><strong>Goal:</strong> <code>auth.log</code> is a login log. Print the source IPs of <code>Failed password</code> lines with their counts, most attempts first, as <code>&lt;count&gt; &lt;ip&gt;</code>.</p>
+<p><strong>Hint:</strong> <code>grep 'Failed password'</code>, then pull the IP (the word after <code>from</code>), then <code>sort | uniq -c | sort -rn</code>.</p>
+<p>Sample data: <code>auth.log</code>. Write <code>answer.sh</code> in this folder and check it with <code>./check.sh datacenter/03-failed-ssh-logins</code>.</p>
+<div class="card"><b>Sample data (already loaded in the editor's sandbox)</b><details><summary><code>auth.log</code></summary><pre>Oct  7 01:02:11 srv sshd[411]: Failed password for root from 203.0.113.9 port 4022 ssh2
+Oct  7 01:02:14 srv sshd[411]: Failed password for root from 203.0.113.9 port 4023 ssh2
+Oct  7 01:05:40 srv sshd[502]: Accepted password for admin from 10.0.0.5 port 5100 ssh2
+Oct  7 01:09:01 srv sshd[611]: Failed password for invalid user test from 198.51.100.7 port 3111 ssh2
+Oct  7 01:09:05 srv sshd[611]: Failed password for root from 203.0.113.9 port 4030 ssh2
+</pre></details></div>
+<details class="card"><summary>Expected output</summary><pre>3 203.0.113.9
+1 198.51.100.7
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+grep &#x27;Failed password&#x27; auth.log | awk &#x27;{for(i=1;i&lt;=NF;i++) if($i==&quot;from&quot;) print $(i+1)}&#x27; | sort | uniq -c | sort -rn | awk &#x27;{print $1, $2}&#x27;
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b>
+<textarea id="edda03" rows="9" spellcheck="false">#!/usr/bin/env bash
+# the sample files are in the current folder
+</textarea>
+<p><button class="btn" onclick="runMod('da03',false)">Run</button> <button class="btn" onclick="runMod('da03',true)">Check answer</button></p><pre class="out" id="outda03"></pre></div></section><section id="mda04" hidden><h1>Patch and reboot list</h1>
+<p><strong>Goal:</strong> <code>servers.txt</code> has lines <code>hostname uptime_days kernel</code>. Servers up more than 90 days need a reboot window. Print <code>REBOOT &lt;hostname&gt; (&lt;days&gt; days)</code> for each, then <code>Total: &lt;n&gt;</code>.</p>
+<p><strong>Hint:</strong> awk with a counter: <code>$2&gt;90 {print ...; n++} END {print "Total:", n+0}</code>.</p>
+<p>Sample data: <code>servers.txt</code>. Write <code>answer.sh</code> in this folder and check it with <code>./check.sh datacenter/04-patch-and-reboot-list</code>.</p>
+<div class="card"><b>Sample data (already loaded in the editor's sandbox)</b><details><summary><code>servers.txt</code></summary><pre>web01 12 5.15.0-91
+web02 140 5.15.0-60
+db01 95 5.15.0-60
+gpu01 30 5.15.0-91
+stor01 400 5.4.0-100
+</pre></details></div>
+<details class="card"><summary>Expected output</summary><pre>REBOOT web02 (140 days)
+REBOOT db01 (95 days)
+REBOOT stor01 (400 days)
+Total: 3
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+awk &#x27;$2&gt;90 {print &quot;REBOOT&quot;, $1, &quot;(&quot; $2 &quot; days)&quot;; n++} END {print &quot;Total:&quot;, n+0}&#x27; servers.txt
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b>
+<textarea id="edda04" rows="9" spellcheck="false">#!/usr/bin/env bash
+# the sample files are in the current folder
+</textarea>
+<p><button class="btn" onclick="runMod('da04',false)">Run</button> <button class="btn" onclick="runMod('da04',true)">Check answer</button></p><pre class="out" id="outda04"></pre></div></section><section id="mha01" hidden><h1>IPMI event log triage</h1>
+<p><strong>Goal:</strong> <code>sel.txt</code> is saved <code>ipmitool sel list</code> output from a BMC. Print only the events that mention <code>Critical</code> or <code>Uncorrectable</code>, then a final line <code>Critical events: &lt;n&gt;</code>.</p>
+<p><strong>Hint:</strong> <code>grep -E 'Critical|Uncorrectable'</code> and <code>wc -l</code>. Count first with a variable.</p>
+<p>Sample data: <code>sel.txt</code>. Write <code>answer.sh</code> in this folder and check it with <code>./check.sh hardware/01-ipmi-event-triage</code>.</p>
+<div class="card"><b>Sample data (already loaded in the editor's sandbox)</b><details><summary><code>sel.txt</code></summary><pre>1 | 10/05/2026 | 02:11:09 | Temperature CPU1 | Upper Critical going high | Asserted
+2 | 10/05/2026 | 02:14:31 | Fan FAN3 | Lower Non-recoverable going low | Asserted
+3 | 10/06/2026 | 11:00:00 | Power Supply PS2 | Presence detected | Deasserted
+4 | 10/06/2026 | 11:00:05 | Memory DIMM_B2 | Uncorrectable ECC | Asserted
+5 | 10/07/2026 | 06:30:12 | Drive Slot Bay4 | Drive Fault | Asserted
+</pre></details></div>
+<details class="card"><summary>Expected output</summary><pre>1 | 10/05/2026 | 02:11:09 | Temperature CPU1 | Upper Critical going high | Asserted
+4 | 10/06/2026 | 11:00:05 | Memory DIMM_B2 | Uncorrectable ECC | Asserted
+Critical events: 2
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+grep -E &#x27;Critical|Uncorrectable&#x27; sel.txt
+n=$(grep -cE &#x27;Critical|Uncorrectable&#x27; sel.txt)
+echo &quot;Critical events: $n&quot;
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b>
+<textarea id="edha01" rows="9" spellcheck="false">#!/usr/bin/env bash
+# the sample files are in the current folder
+</textarea>
+<p><button class="btn" onclick="runMod('ha01',false)">Run</button> <button class="btn" onclick="runMod('ha01',true)">Check answer</button></p><pre class="out" id="outha01"></pre></div></section><section id="mha02" hidden><h1>Temperature and fan check</h1>
+<p><strong>Goal:</strong> <code>sensors.txt</code> is saved <code>ipmitool sensor</code> output with columns separated by <code>|</code> (name, value, unit, status). Print <code>CHECK &lt;name&gt;: &lt;value&gt; &lt;unit&gt;</code> for every sensor whose status is not <code>ok</code>.</p>
+<p><strong>Hint:</strong> <code>awk -F' \\| '</code> splits on the pipe. Status is field 4.</p>
+<p>Sample data: <code>sensors.txt</code>. Write <code>answer.sh</code> in this folder and check it with <code>./check.sh hardware/02-temperature-and-fans</code>.</p>
+<div class="card"><b>Sample data (already loaded in the editor's sandbox)</b><details><summary><code>sensors.txt</code></summary><pre>CPU1 Temp | 92.000 | degrees C | cr
+CPU2 Temp | 61.000 | degrees C | ok
+FAN1 | 8400.000 | RPM | ok
+FAN3 | 0.000 | RPM | cr
+PS1 Status | 0x1 | discrete | ok
+Inlet Temp | 38.000 | degrees C | nc
+</pre></details></div>
+<details class="card"><summary>Expected output</summary><pre>CHECK CPU1 Temp: 92.000 degrees C
+CHECK FAN3: 0.000 RPM
+CHECK Inlet Temp: 38.000 degrees C
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+awk -F&#x27; \\| &#x27; &#x27;$4!=&quot;ok&quot; {print &quot;CHECK &quot; $1 &quot;: &quot; $2 &quot; &quot; $3}&#x27; sensors.txt
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b>
+<textarea id="edha02" rows="9" spellcheck="false">#!/usr/bin/env bash
+# the sample files are in the current folder
+</textarea>
+<p><button class="btn" onclick="runMod('ha02',false)">Run</button> <button class="btn" onclick="runMod('ha02',true)">Check answer</button></p><pre class="out" id="outha02"></pre></div></section><section id="mha03" hidden><h1>Disk health scan (SMART)</h1>
+<p><strong>Goal:</strong> <code>smart.txt</code> has one line per disk: <code>device reallocated pending model</code>. A disk is FAILING if reallocated &gt; 0 or pending &gt; 0. Print <code>FAILING &lt;device&gt; (realloc=&lt;r&gt; pending=&lt;p&gt;)</code> for those, then <code>Healthy disks: &lt;n&gt;</code>.</p>
+<p><strong>Hint:</strong> awk: <code>if ($2&gt;0 || $3&gt;0) {...} else h++</code> and print <code>h+0</code> at the end.</p>
+<p>Sample data: <code>smart.txt</code>. Write <code>answer.sh</code> in this folder and check it with <code>./check.sh hardware/03-disk-health-scan</code>.</p>
+<div class="card"><b>Sample data (already loaded in the editor's sandbox)</b><details><summary><code>smart.txt</code></summary><pre>/dev/sda 0 0 Samsung_PM883
+/dev/sdb 12 0 Seagate_ST4000
+/dev/sdc 0 3 WDC_WD4003
+/dev/sdd 0 0 Samsung_PM883
+</pre></details></div>
+<details class="card"><summary>Expected output</summary><pre>FAILING /dev/sdb (realloc=12 pending=0)
+FAILING /dev/sdc (realloc=0 pending=3)
+Healthy disks: 2
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+awk &#x27;{ if ($2&gt;0 || $3&gt;0) print &quot;FAILING&quot;, $1, &quot;(realloc=&quot; $2 &quot; pending=&quot; $3 &quot;)&quot;; else h++ } END {print &quot;Healthy disks:&quot;, h+0}&#x27; smart.txt
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b>
+<textarea id="edha03" rows="9" spellcheck="false">#!/usr/bin/env bash
+# the sample files are in the current folder
+</textarea>
+<p><button class="btn" onclick="runMod('ha03',false)">Run</button> <button class="btn" onclick="runMod('ha03',true)">Check answer</button></p><pre class="out" id="outha03"></pre></div></section><section id="mha04" hidden><h1>Memory ECC error finder</h1>
+<p><strong>Goal:</strong> <code>edac.txt</code> lines look like <code>DIMM_A1 ce=0 ue=0</code> (correctable and uncorrectable errors). Replace a DIMM when ue&gt;0 or ce&gt;100. Print <code>REPLACE &lt;dimm&gt;</code> for those, one per line.</p>
+<p><strong>Hint:</strong> Remove the <code>ce=</code>/<code>ue=</code> text with <code>sed</code> or use awk <code>split($2,a,"=")</code>.</p>
+<p>Sample data: <code>edac.txt</code>. Write <code>answer.sh</code> in this folder and check it with <code>./check.sh hardware/04-memory-ecc-errors</code>.</p>
+<div class="card"><b>Sample data (already loaded in the editor's sandbox)</b><details><summary><code>edac.txt</code></summary><pre>DIMM_A1 ce=0 ue=0
+DIMM_A2 ce=250 ue=0
+DIMM_B1 ce=3 ue=0
+DIMM_B2 ce=10 ue=1
+</pre></details></div>
+<details class="card"><summary>Expected output</summary><pre>REPLACE DIMM_A2
+REPLACE DIMM_B2
+</pre></details>
+<details class="card"><summary>Show reference solution (try first!)</summary><pre>#!/usr/bin/env bash
+sed &#x27;s/ce=//; s/ue=//&#x27; edac.txt | awk &#x27;$3&gt;0 || $2&gt;100 {print &quot;REPLACE&quot;, $1}&#x27;
+</pre></details>
+<div class="card"><b>Write your script here (answer.sh)</b>
+<textarea id="edha04" rows="9" spellcheck="false">#!/usr/bin/env bash
+# the sample files are in the current folder
+</textarea>
+<p><button class="btn" onclick="runMod('ha04',false)">Run</button> <button class="btn" onclick="runMod('ha04',true)">Check answer</button></p><pre class="out" id="outha04"></pre></div></section></main><script>
+const M=null;
+function show(id){document.querySelectorAll('section').forEach(s=>s.hidden=s.id!==id);document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.id==='l-'+id));scrollTo(0,0);location.hash=id}
+function ans(m,i,j,c,el){const r=document.getElementById('r'+m+'_'+i);r.textContent=j===c?'Correct!':'Not quite. Re-read the lesson.';r.className=j===c?'ok':'no'}
+show((location.hash||'#home').slice(1)||'home');
+</script><script type="module">
+let Bash, mountTerminal, bootErr = "";
+try { ({ Bash } = await import("./vendor/just-bash.js?v=2")); ({ mountTerminal } = await import("./terminal.js?v=2")); } catch (e) { bootErr = "Terminal failed to start:\n" + (e && e.message || e) + (location.protocol === "file:" ? "\n\nYou opened this as a local file. Use the website (github.io) or run: python -m http.server inside docs." : "\n\nTry Ctrl+F5 (hard refresh)."); }
+const D = {"01": {"input": "", "expected": "Hello, Linux!\nI am learning Bash.", "args": ""}, "02": {"input": "Asha\n20", "expected": "Hi Asha, next year you will be 21.", "args": ""}, "03": {"input": "7", "expected": "7 is odd", "args": ""}, "04": {"input": "", "expected": "1 squared is 1\n2 squared is 4\n3 squared is 9\n4 squared is 16\n5 squared is 25", "args": ""}, "05": {"input": "", "expected": "Sum: 7", "args": "3 4"}, "06": {"input": "ravi,80\nmeena,90\nkiran,70", "expected": "Total: 240", "args": ""}, "07": {"input": "start", "expected": "Starting service", "args": ""}, "08": {"input": "definitely_missing_file.txt", "expected": "Error: file not found", "args": ""}, "09": {"input": "Backup started", "expected": "[INFO] Backup started", "args": ""}, "10": {"input": "linux\nbash\nscripting", "expected": "Count: 3\nLongest: scripting", "args": ""}, "da01": {"files": {"inventory.csv": "hostname,rack,u,role,status\nweb01,R01,10,web,online\nweb02,R01,11,web,online\ndb01,R01,20,database,maintenance\ngpu01,R02,5,gpu,online\ngpu02,R02,7,gpu,offline\nstor01,R03,2,storage,online\n"}, "expected": "R01: 3\nR02: 2\nR03: 1\nNOT ONLINE:\ndb01\ngpu02"}, "da02": {"files": {"df.txt": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/sda2        50G   41G  9.0G  82% /\n/dev/sdb1       2.0T  1.1T  900G  55% /data\n/dev/sdc1       4.0T  3.8T  200G  95% /backup\ntmpfs           16G     0   16G   0% /dev/shm\n"}, "expected": "ALERT / 82%\nALERT /backup 95%"}, "da03": {"files": {"auth.log": "Oct  7 01:02:11 srv sshd[411]: Failed password for root from 203.0.113.9 port 4022 ssh2\nOct  7 01:02:14 srv sshd[411]: Failed password for root from 203.0.113.9 port 4023 ssh2\nOct  7 01:05:40 srv sshd[502]: Accepted password for admin from 10.0.0.5 port 5100 ssh2\nOct  7 01:09:01 srv sshd[611]: Failed password for invalid user test from 198.51.100.7 port 3111 ssh2\nOct  7 01:09:05 srv sshd[611]: Failed password for root from 203.0.113.9 port 4030 ssh2\n"}, "expected": "3 203.0.113.9\n1 198.51.100.7"}, "da04": {"files": {"servers.txt": "web01 12 5.15.0-91\nweb02 140 5.15.0-60\ndb01 95 5.15.0-60\ngpu01 30 5.15.0-91\nstor01 400 5.4.0-100\n"}, "expected": "REBOOT web02 (140 days)\nREBOOT db01 (95 days)\nREBOOT stor01 (400 days)\nTotal: 3"}, "ha01": {"files": {"sel.txt": "1 | 10/05/2026 | 02:11:09 | Temperature CPU1 | Upper Critical going high | Asserted\n2 | 10/05/2026 | 02:14:31 | Fan FAN3 | Lower Non-recoverable going low | Asserted\n3 | 10/06/2026 | 11:00:00 | Power Supply PS2 | Presence detected | Deasserted\n4 | 10/06/2026 | 11:00:05 | Memory DIMM_B2 | Uncorrectable ECC | Asserted\n5 | 10/07/2026 | 06:30:12 | Drive Slot Bay4 | Drive Fault | Asserted\n"}, "expected": "1 | 10/05/2026 | 02:11:09 | Temperature CPU1 | Upper Critical going high | Asserted\n4 | 10/06/2026 | 11:00:05 | Memory DIMM_B2 | Uncorrectable ECC | Asserted\nCritical events: 2"}, "ha02": {"files": {"sensors.txt": "CPU1 Temp | 92.000 | degrees C | cr\nCPU2 Temp | 61.000 | degrees C | ok\nFAN1 | 8400.000 | RPM | ok\nFAN3 | 0.000 | RPM | cr\nPS1 Status | 0x1 | discrete | ok\nInlet Temp | 38.000 | degrees C | nc\n"}, "expected": "CHECK CPU1 Temp: 92.000 degrees C\nCHECK FAN3: 0.000 RPM\nCHECK Inlet Temp: 38.000 degrees C"}, "ha03": {"files": {"smart.txt": "/dev/sda 0 0 Samsung_PM883\n/dev/sdb 12 0 Seagate_ST4000\n/dev/sdc 0 3 WDC_WD4003\n/dev/sdd 0 0 Samsung_PM883\n"}, "expected": "FAILING /dev/sdb (realloc=12 pending=0)\nFAILING /dev/sdc (realloc=0 pending=3)\nHealthy disks: 2"}, "ha04": {"files": {"edac.txt": "DIMM_A1 ce=0 ue=0\nDIMM_A2 ce=250 ue=0\nDIMM_B1 ce=3 ue=0\nDIMM_B2 ce=10 ue=1\n"}, "expected": "REPLACE DIMM_A2\nREPLACE DIMM_B2"}};
+const HOME = "/home/user";
+window.runMod = async (n, check) => {
+  const o = document.getElementById("out" + n), m = D[n];
+  o.textContent = "Running...";
+  try {
+    const files = { [HOME + "/answer.sh"]: document.getElementById("ed" + n).value };
+    if (m.files) for (const [f, c] of Object.entries(m.files)) files[HOME + "/" + f] = c;
+    else files[HOME + "/input.txt"] = m.input + "\n";
+    const sh = new Bash({ files });
+    const r = await sh.exec(m.files ? "bash answer.sh" : `bash answer.sh ${m.args} < input.txt`, { cwd: HOME });
+    let t = r.stdout + (r.stderr ? "\n[errors]\n" + r.stderr : "");
+    if (check) t += r.stdout.trimEnd() === m.expected.trimEnd() ? "\n\u2705 PASS: your output matches!" : "\n\u274c FAIL. Expected:\n" + m.expected;
+    o.textContent = t || "(no output)";
+  } catch (e) { o.textContent = "Error: " + e.message; }
+};
+if (bootErr) document.getElementById("tout").textContent = bootErr; else mountTerminal(document.getElementById("tout"), document.getElementById("tin"), document.getElementById("tprompt"), document.getElementById("term"));
+</script></body></html>

@@ -1,0 +1,6 @@
+CPU1 Temp | 92.000 | degrees C | cr
+CPU2 Temp | 61.000 | degrees C | ok
+FAN1 | 8400.000 | RPM | ok
+FAN3 | 0.000 | RPM | cr
+PS1 Status | 0x1 | discrete | ok
+Inlet Temp | 38.000 | degrees C | nc

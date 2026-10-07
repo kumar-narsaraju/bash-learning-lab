@@ -1,0 +1,3 @@
+ravi,80
+meena,90
+kiran,70

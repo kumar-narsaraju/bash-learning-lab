@@ -1,0 +1,4 @@
+/dev/sda 0 0 Samsung_PM883
+/dev/sdb 12 0 Seagate_ST4000
+/dev/sdc 0 3 WDC_WD4003
+/dev/sdd 0 0 Samsung_PM883

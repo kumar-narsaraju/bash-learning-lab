@@ -1,0 +1,5 @@
+1 | 10/05/2026 | 02:11:09 | Temperature CPU1 | Upper Critical going high | Asserted
+2 | 10/05/2026 | 02:14:31 | Fan FAN3 | Lower Non-recoverable going low | Asserted
+3 | 10/06/2026 | 11:00:00 | Power Supply PS2 | Presence detected | Deasserted
+4 | 10/06/2026 | 11:00:05 | Memory DIMM_B2 | Uncorrectable ECC | Asserted
+5 | 10/07/2026 | 06:30:12 | Drive Slot Bay4 | Drive Fault | Asserted
